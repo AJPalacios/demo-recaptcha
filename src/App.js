@@ -1,21 +1,13 @@
-import React, { useEffect } from "react";
-import {
-  withGoogleReCaptcha
-} from 'react-google-recaptcha-v3';
+import React from "react";
 import "./style.css";
 
-const App = (props) => {
+const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let _token = document.getElementById("token");
-    let _action = document.getElementById("action");
     window.grecaptcha.ready(function() {
       window.grecaptcha.execute(`${process.env.REACT_APP_RECAPTCHA}`, {action: 'submit'}).then((token) => {
         _token.value = `${token}`;
-        const data = {
-          secret: process.env.REACT_APP_RECAPTCHA_SECRET,
-          response: token,
-        }
         fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.REACT_APP_RECAPTCHA_SECRET}&response=${token}`,{
           method: 'post',
         })
